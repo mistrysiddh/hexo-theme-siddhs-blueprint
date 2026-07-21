@@ -1,0 +1,15 @@
+<div class="mx-auto flex max-w-2xl flex-col items-center px-4 py-28 text-center">
+  <div class="bp-panel relative w-full p-10">
+    <span class="bp-corner tl !w-5 !h-5"></span><span class="bp-corner tr !w-5 !h-5"></span>
+    <span class="bp-corner bl !w-5 !h-5"></span><span class="bp-corner br !w-5 !h-5"></span>
+    <span class="bp-label">ERROR — DOCUMENT NOT FOUND</span>
+    <div class="mx-auto my-6 flex h-16 w-16 items-center justify-center border border-error/50 text-error"><%- icon('alert-triangle', 28) %></div>
+    <h1 class="font-display text-5xl font-bold text-white">404</h1>
+    <p class="mt-3 font-mono text-sm text-cyan-dim">DWG. STATUS: MISSING FROM ARCHIVE</p>
+    <p class="mt-4 text-steel leading-relaxed">The specification you requested doesn't exist, was decommissioned, or the reference number was mistyped.</p>
+    <div class="mt-8 flex justify-center gap-3">
+      <a href="<%- url_for('/') %>" class="inline-flex items-center justify-center gap-2 border font-mono uppercase tracking-wider px-5 py-2.5 text-xs bg-cyan text-navy-900 border-cyan hover:bg-cyan-bright transition-colors">Return to Index <%- icon('arrow-right', 13) %></a>
+      <a href="<%- url_for('/categories/') %>" class="inline-flex items-center justify-center gap-2 border font-mono uppercase tracking-wider px-5 py-2.5 text-xs bg-transparent text-cyan border-cyan/40 hover:border-cyan hover:bg-cyan/10 transition-colors">Browse Modules</a>
+    </div>
+  </div>
+</div>

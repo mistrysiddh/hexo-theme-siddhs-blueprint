@@ -1,0 +1,40 @@
+<%
+  var catDoc = site.categories.toArray().find(function (c) { return c.name === page.category; });
+  var slug = catDoc ? catDoc.slug : '';
+  var mod = category_module(slug);
+  var totalCount = catDoc ? catDoc.posts.length : page.posts.length;
+%>
+<div class="mx-auto max-w-7xl px-4 md:px-6 py-10">
+  <%- partial('_partial/breadcrumbs', { crumbs: [{ label: 'Categories', path: '/categories/' }, { label: page.category }] }) %>
+
+  <div class="mt-6 flex items-start gap-4 border-b border-cyan/15 pb-8">
+    <span class="flex h-14 w-14 flex-shrink-0 items-center justify-center border border-cyan/40 text-cyan"><%- icon(mod.icon, 26) %></span>
+    <div>
+      <span class="bp-label"><%= mod.code %></span>
+      <h1 class="font-display text-2xl md:text-4xl font-semibold text-white mt-1"><%= mod.name %></h1>
+      <p class="mt-2 max-w-2xl text-sm text-steel leading-relaxed"><%= mod.description %></p>
+      <p class="mt-2 font-mono text-[11px] text-cyan-dim"><%= totalCount %> document<%= totalCount !== 1 ? 's' : '' %> indexed</p>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <% if (page.posts.length === 0) { %>
+    <div class="flex flex-col items-center justify-center border border-dashed border-cyan/25 px-6 py-16 text-center">
+      <div class="mb-4 flex h-14 w-14 items-center justify-center border border-cyan/30 text-cyan"><%- icon('search', 24) %></div>
+      <p class="bp-label mb-2">NO RECORDS FOUND</p>
+      <h3 class="font-display text-lg font-semibold text-white">No documents yet</h3>
+      <p class="mt-2 max-w-sm text-sm text-steel">This module doesn't have any published specifications yet — check back soon.</p>
+    </div>
+    <% } else { %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% page.posts.toArray().forEach(function (post) { %>
+      <%- partial('_partial/article-card', { post: post, variant: 'latest' }) %>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="mt-12">
+    <%- partial('_partial/pagination', { current: page.current, total: page.total, base: '/categories/' + slug + '/' }) %>
+  </div>
+</div>

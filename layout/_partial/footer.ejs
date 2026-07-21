@@ -1,0 +1,98 @@
+<%
+  var socialLinks = [
+    { key: 'github', label: 'GitHub' },
+    { key: 'linkedin', label: 'LinkedIn' },
+    { key: 'twitter', label: 'Twitter' },
+    { key: 'instagram', label: 'Instagram' },
+    { key: 'youtube', label: 'YouTube' },
+  ];
+  var recentPosts = site.posts.sort('-date').limit(4).toArray();
+  var moduleEntries = Object.keys(theme.category_modules).slice(0, 6);
+  var titleBlockFields = [
+    { label: 'Project Name', value: theme.title_block.project_name },
+    { label: 'Document ID', value: theme.title_block.document_id },
+    { label: 'Drawing Number', value: theme.title_block.drawing_number },
+    { label: 'Revision', value: theme.title_block.revision },
+    { label: 'Status', value: theme.title_block.status },
+    { label: 'Scale', value: theme.title_block.scale },
+    { label: 'Version', value: theme.title_block.version },
+    { label: 'Author', value: theme.title_block.author },
+    { label: 'License', value: theme.title_block.license },
+    { label: 'Last Revision', value: new Date().toISOString().slice(0, 10) },
+  ];
+%>
+<footer class="border-t border-cyan/15 bg-navy-600/60 mt-24">
+  <div class="mx-auto max-w-7xl px-4 md:px-6 py-14">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-4">
+      <div>
+        <a href="<%- url_for('/') %>" class="flex items-center gap-2.5 mb-4">
+          <span class="flex h-8 w-8 items-center justify-center border border-cyan/40 text-cyan"><%- icon('compass', 17) %></span>
+          <span class="font-display text-[15px] font-semibold text-white">
+            <%= theme.brand.logo_prefix %> <span class="text-cyan"><%= theme.brand.logo_accent %></span>
+          </span>
+        </a>
+        <p class="text-sm text-steel leading-relaxed max-w-xs">
+          A living technical journal on systems engineering, infrastructure and software —
+          drafted like a specification, read like a story.
+        </p>
+        <div class="flex gap-2 mt-5">
+          <% socialLinks.forEach(function (s) { %>
+          <a href="<%= theme.social[s.key] %>" aria-label="<%= s.label %>" class="flex h-8 w-8 items-center justify-center border border-cyan/20 text-steel hover:border-cyan hover:text-cyan transition-colors">
+            <%- icon(s.key, 14) %>
+          </a>
+          <% }) %>
+          <a href="<%= theme.author.email %>" aria-label="Email" class="flex h-8 w-8 items-center justify-center border border-cyan/20 text-steel hover:border-cyan hover:text-cyan transition-colors">
+            <%- icon('mail', 14) %>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="bp-label mb-4">Modules</h3>
+        <ul class="space-y-2">
+          <% moduleEntries.forEach(function (slug) { var mod = theme.category_modules[slug]; %>
+          <li><a href="<%- url_for('/categories/' + slug + '/') %>" class="text-sm text-steel hover:text-cyan transition-colors"><%= mod.code %> — <%= mod.label %></a></li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="bp-label mb-4">Recent Posts</h3>
+        <ul class="space-y-2">
+          <% recentPosts.forEach(function (p) { %>
+          <li><a href="<%- url_for(p.path) %>" class="text-sm text-steel hover:text-cyan transition-colors line-clamp-1"><%= p.title %></a></li>
+          <% }) %>
+        </ul>
+        <h3 class="bp-label mt-6 mb-3">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="<%- url_for('/categories/') %>" class="text-sm text-steel hover:text-cyan transition-colors">Categories</a></li>
+          <li><a href="<%- url_for('/archives/') %>" class="text-sm text-steel hover:text-cyan transition-colors">Timeline</a></li>
+          <li><a href="<%- url_for('/about/') %>" class="text-sm text-steel hover:text-cyan transition-colors">About</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="bp-label mb-4">Subscribe — Rev. Updates</h3>
+        <div data-widget="Newsletter" data-widget-props='<%- widget_props({ compact: true }) %>'>
+          <p class="text-xs text-steel-dim font-mono">Loading subscription module…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-cyan/15">
+    <div class="mx-auto max-w-7xl px-4 md:px-6 py-4">
+      <div class="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-10 border border-cyan/20 text-[10px] font-mono">
+        <% titleBlockFields.forEach(function (f, i) { %>
+        <div class="px-2.5 py-2 <%= i !== titleBlockFields.length - 1 ? 'border-r border-cyan/15' : '' %> <%= i < 5 ? 'border-b sm:border-b-0 border-cyan/15' : '' %>">
+          <div class="uppercase tracking-wider text-cyan-dim"><%= f.label %></div>
+          <div class="mt-0.5 text-steel-bright truncate"><%= f.value %></div>
+        </div>
+        <% }) %>
+      </div>
+      <p class="mt-3 text-center text-[11px] text-steel-dim font-mono">
+        © <%= new Date().getFullYear() %> <%= theme.brand.logo_prefix %> <%= theme.brand.logo_accent %> — All specifications documented under <%= theme.title_block.license %>. Built with Hexo.
+      </p>
+    </div>
+  </div>
+</footer>

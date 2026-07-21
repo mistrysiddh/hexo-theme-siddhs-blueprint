@@ -1,0 +1,85 @@
+<%
+  var posts = page.posts.sort('-date').toArray();
+  var years = [];
+  posts.forEach(function (p) {
+    var y = date(p.date, 'YYYY');
+    if (years.indexOf(y) === -1) years.push(y);
+  });
+  var categorySlugs = Object.keys(theme.category_modules);
+%>
+<div class="mx-auto max-w-4xl px-4 md:px-6 py-10">
+  <%- partial('_partial/breadcrumbs', { crumbs: [{ label: 'Timeline' }] }) %>
+  <div class="mt-4">
+    <%- partial('_partial/section-marker', { index: '01', title: 'Project Timeline', description: 'Every published specification, plotted as a revision history — newest checkpoint first.' }) %>
+  </div>
+
+  <div class="mb-10 flex flex-wrap gap-3">
+    <select id="bp-timeline-year" class="border border-cyan/25 bg-navy-700/50 px-3 py-2 font-mono text-xs text-white">
+      <option value="all">YEAR: ALL</option>
+      <% years.forEach(function (y) { %><option value="<%= y %>">YEAR: <%= y %></option><% }) %>
+    </select>
+    <select id="bp-timeline-category" class="border border-cyan/25 bg-navy-700/50 px-3 py-2 font-mono text-xs text-white">
+      <option value="all">MODULE: ALL</option>
+      <% categorySlugs.forEach(function (slug) { var mod = theme.category_modules[slug]; %>
+      <option value="<%= slug %>">MODULE: <%= mod.name %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <% if (posts.length === 0) { %>
+  <div class="flex flex-col items-center justify-center border border-dashed border-cyan/25 px-6 py-16 text-center">
+    <p class="bp-label mb-2">NO RECORDS FOUND</p>
+    <h3 class="font-display text-lg font-semibold text-white">No milestones yet</h3>
+  </div>
+  <% } else { %>
+  <div class="relative pl-8 sm:pl-10" id="bp-timeline-list">
+    <div class="absolute left-[9px] sm:left-[13px] top-2 bottom-2 w-px bg-cyan/20" aria-hidden="true"></div>
+    <% var lastYear = '';
+       posts.forEach(function (post) {
+         var y = date(post.date, 'YYYY');
+         var showYear = y !== lastYear;
+         lastYear = y;
+         var cats = post.categories.toArray();
+         var cat = cats.length ? cats[0] : null;
+    %>
+    <% if (showYear) { %>
+    <div class="relative -ml-8 sm:-ml-10 mb-6 mt-10 first:mt-0 flex items-center gap-3" data-timeline-year-marker="<%= y %>">
+      <span class="relative z-10 flex h-6 w-14 sm:w-16 items-center justify-center border border-cyan bg-navy-500 font-mono text-xs text-cyan"><%= y %></span>
+      <span class="h-px flex-1 bg-cyan/20"></span>
+    </div>
+    <% } %>
+    <div class="relative pb-10 bp-timeline-item" data-timeline-item data-year="<%= y %>" data-category="<%= cat ? cat.slug : '' %>">
+      <span class="absolute -left-8 sm:-left-10 top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 border-cyan bg-navy-600"><%- icon('git-commit-vertical', 11) %></span>
+      <div class="bp-panel bg-navy-700/30 p-4 md:p-5">
+        <span class="bp-corner tl"></span><span class="bp-corner br"></span>
+        <div class="flex flex-col gap-4 sm:flex-row">
+          <a href="<%- url_for(post.path) %>" class="relative aspect-video sm:aspect-square sm:h-28 sm:w-28 flex-shrink-0 overflow-hidden border border-cyan/20">
+            <img src="<%= post.cover %>" alt="<%= post.title %>" class="h-full w-full object-cover" loading="lazy">
+          </a>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <% if (cat) { var mod = category_module(cat.slug); %>
+              <span class="inline-flex items-center gap-1 border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-cyan border-cyan/40 bg-cyan/5"><%= mod.code %> · <%= cat.name %></span>
+              <% } %>
+              <span class="font-mono text-[10px] text-steel-dim"><%= drawing_number(post.slug) %></span>
+              <span class="font-mono text-[10px] text-steel-dim"><%= revision_code(post.date) %></span>
+            </div>
+            <a href="<%- url_for(post.path) %>"><h3 class="font-display text-base md:text-lg font-semibold text-white hover:text-cyan-bright transition-colors"><%= post.title %></h3></a>
+            <p class="mt-1 text-sm text-steel line-clamp-2"><%= post.description || excerpt_text(post.content, 140) %></p>
+            <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-steel-dim">
+              <span><%= date(post.date, 'MMMM DD, YYYY') %></span>
+              <span class="flex items-center gap-1"><%- icon('clock', 10) %> <%= reading_time(post.content) %> MIN</span>
+              <span><%= post.author || theme.author.name %></span>
+              <span class="text-cyan-dim"><%= post.version || 'v1.0' %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+    <div id="bp-timeline-sentinel" class="h-4"></div>
+    <p id="bp-timeline-loading" class="hidden text-center font-mono text-[10px] text-steel-dim">LOADING MORE CHECKPOINTS…</p>
+    <p id="bp-timeline-empty" class="hidden text-center font-mono text-[10px] text-steel-dim py-10">No milestones match the current filters.</p>
+  </div>
+  <% } %>
+</div>

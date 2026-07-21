@@ -1,0 +1,29 @@
+<%
+  var tagDoc = site.tags.toArray().find(function (t) { return t.name === page.tag; });
+  var slug = tagDoc ? tagDoc.slug : '';
+  var totalCount = tagDoc ? tagDoc.posts.length : page.posts.length;
+%>
+<div class="mx-auto max-w-7xl px-4 md:px-6 py-10">
+  <%- partial('_partial/breadcrumbs', { crumbs: [{ label: 'Tags' }, { label: page.tag }] }) %>
+
+  <div class="mt-6 flex items-start gap-4 border-b border-cyan/15 pb-8">
+    <span class="flex h-14 w-14 flex-shrink-0 items-center justify-center border border-cyan/40 text-cyan"><%- icon('hash', 22) %></span>
+    <div>
+      <span class="bp-label">TAG INDEX</span>
+      <h1 class="font-display text-2xl md:text-4xl font-semibold text-white mt-1">#<%= page.tag %></h1>
+      <p class="mt-2 font-mono text-[11px] text-cyan-dim"><%= totalCount %> document<%= totalCount !== 1 ? 's' : '' %> tagged</p>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% page.posts.toArray().forEach(function (post) { %>
+      <%- partial('_partial/article-card', { post: post, variant: 'latest' }) %>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="mt-12">
+    <%- partial('_partial/pagination', { current: page.current, total: page.total, base: '/tags/' + slug + '/' }) %>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'en' %>" class="<%= theme.appearance.default_theme === 'light' ? 'light' : '' %>">
+<%- partial('_partial/head') %>
+<body>
+  <a href="#bp-main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:border focus:border-cyan focus:bg-navy-800 focus:px-3 focus:py-2 focus:font-mono focus:text-xs focus:text-cyan">
+    Skip to content
+  </a>
+  <div id="bp-progress-bar"></div>
+
+  <div class="pointer-events-none fixed inset-0 z-[60]" aria-hidden="true">
+    <span class="bp-corner tl !w-5 !h-5 fixed top-3 left-3"></span>
+    <span class="bp-corner tr !w-5 !h-5 fixed top-3 right-3"></span>
+    <span class="bp-corner bl !w-5 !h-5 fixed bottom-3 left-3"></span>
+    <span class="bp-corner br !w-5 !h-5 fixed bottom-3 right-3"></span>
+  </div>
+
+  <div class="flex min-h-screen flex-col">
+    <%- partial('_partial/navbar') %>
+    <main id="bp-main" class="flex-1">
+      <%- body %>
+    </main>
+    <%- partial('_partial/footer') %>
+  </div>
+
+  <!-- Announces the new page to screen readers after each SPA-style
+       navigation, since swapping #bp-main doesn't trigger a normal
+       page-load announcement the way a full navigation would. -->
+  <div id="bp-route-announcer" role="status" aria-live="polite" class="sr-only"></div>
+
+  <div id="bp-widget-root"></div>
+
+  <script>
+    window.__BP_ROOT__ = <%- JSON.stringify(config.root || '/') %>;
+    (function () {
+      try {
+        var t = localStorage.getItem('bp-theme');
+        if (t === 'light') document.documentElement.classList.add('light');
+      } catch (e) {}
+    })();
+  </script>
+  <script type="module" src="<%- url_for('/assets/app.js') %>?v=<%= asset_version('app.js') %>"></script>
+</body>
+</html>

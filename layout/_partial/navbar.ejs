@@ -1,0 +1,58 @@
+<header class="sticky top-0 z-40 border-b border-cyan/15 bg-navy-500/90 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
+    <a href="<%- url_for('/') %>" class="flex items-center gap-2.5 group flex-shrink-0">
+      <span class="relative flex h-8 w-8 items-center justify-center border border-cyan/40 text-cyan group-hover:border-cyan group-hover:bg-cyan/10 transition-colors">
+        <%- icon('compass', 17) %>
+      </span>
+      <span class="flex flex-col leading-none">
+        <span class="font-display text-[15px] font-semibold tracking-wide text-white">
+          <%= theme.brand.logo_prefix %> <span class="text-cyan"><%= theme.brand.logo_accent %></span>
+        </span>
+        <span class="bp-label mt-0.5"><%= theme.brand.tagline %></span>
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-1">
+      <% for (var label in theme.menu) { %>
+      <a
+        href="<%- url_for(theme.menu[label]) %>"
+        class="relative px-3.5 py-2 font-mono text-xs uppercase tracking-wider transition-colors <%= is_current(theme.menu[label]) ? 'text-cyan' : 'text-steel hover:text-cyan-bright' %>"
+      >
+        <%= label %>
+        <% if (is_current(theme.menu[label])) { %><span class="absolute left-3 right-3 -bottom-[1px] h-px bg-cyan"></span><% } %>
+      </a>
+      <% } %>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button id="bp-search-open" aria-label="Open search" class="group relative flex h-9 items-center gap-2 border border-cyan/25 px-3 text-steel hover:border-cyan hover:text-cyan transition-colors">
+        <%- icon('search', 14) %>
+        <span class="hidden lg:inline font-mono text-[11px]">SEARCH</span>
+        <span class="hidden lg:inline font-mono text-[10px] text-steel-dim border border-cyan/20 px-1">/</span>
+      </button>
+
+      <button id="bp-theme-toggle" aria-label="Toggle color theme" class="group relative flex h-9 w-9 items-center justify-center border border-cyan/25 text-steel hover:border-cyan hover:text-cyan transition-colors">
+        <span class="bp-corner tl"></span><span class="bp-corner br"></span>
+        <span id="bp-theme-icon-sun"><%- icon('sun', 15) %></span>
+        <span id="bp-theme-icon-moon" class="hidden"><%- icon('moon', 15) %></span>
+      </button>
+
+      <a href="<%- url_for('/about/') %>" aria-label="Profile" class="hidden sm:flex h-9 w-9 items-center justify-center border border-cyan/25 text-steel hover:border-cyan hover:text-cyan transition-colors">
+        <%- icon('user', 15) %>
+      </a>
+
+      <button id="bp-mobile-toggle" aria-label="Toggle menu" aria-expanded="false" class="flex md:hidden h-9 w-9 items-center justify-center border border-cyan/25 text-steel">
+        <span id="bp-mobile-icon-menu"><%- icon('menu', 16) %></span>
+        <span id="bp-mobile-icon-close" class="hidden"><%- icon('x', 16) %></span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="bp-mobile-panel" class="hidden md:hidden border-t border-cyan/15 bg-navy-600 px-4 py-3 flex flex-col">
+    <% for (var mlabel in theme.menu) { %>
+    <a href="<%- url_for(theme.menu[mlabel]) %>" class="border-b border-cyan/10 py-3 font-mono text-xs uppercase tracking-wider <%= is_current(theme.menu[mlabel]) ? 'text-cyan' : 'text-steel' %>">
+      <%= mlabel %>
+    </a>
+    <% } %>
+  </nav>
+</header>

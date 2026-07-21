@@ -1,0 +1,17 @@
+<%
+  // `crumbs` local: array of { label, path } — path omitted for the current/last item.
+  var crumbs = typeof crumbs !== 'undefined' ? crumbs : [];
+%>
+<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 font-mono text-[11px] text-steel-dim overflow-x-auto">
+  <a href="<%- url_for('/') %>" class="flex items-center gap-1 hover:text-cyan transition-colors flex-shrink-0"><%- icon('compass', 11) %></a>
+  <% crumbs.forEach(function (c) { %>
+  <span class="flex items-center gap-1.5 flex-shrink-0">
+    <%- icon('chevron-right', 11) %>
+    <% if (c.path) { %>
+    <a href="<%- url_for(c.path) %>" class="hover:text-cyan transition-colors uppercase tracking-wide"><%= c.label %></a>
+    <% } else { %>
+    <span class="text-cyan uppercase tracking-wide"><%= c.label %></span>
+    <% } %>
+  </span>
+  <% }) %>
+</nav>

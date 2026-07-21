@@ -1,0 +1,216 @@
+@import "katex/dist/katex.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bp-grid-size: 24px;
+}
+
+* {
+  border-color: rgba(94, 223, 255, 0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-navy-500 text-white font-sans antialiased;
+  background-image:
+    linear-gradient(rgba(94, 223, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 223, 255, 0.06) 1px, transparent 1px);
+  background-size: var(--bp-grid-size) var(--bp-grid-size);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(94, 223, 255, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0a2540; }
+::-webkit-scrollbar-thumb { background: #1a3f63; border: 2px solid #0a2540; }
+::-webkit-scrollbar-thumb:hover { background: #2b5a86; }
+
+/* ---------- Blueprint utility classes ---------- */
+
+.bp-panel { @apply relative border border-cyan/20 bg-navy-600/60; }
+.bp-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(94, 223, 255, 0.08);
+  margin: 3px;
+}
+
+.bp-corner { position: absolute; width: 12px; height: 12px; pointer-events: none; }
+.bp-corner::before, .bp-corner::after { content: ""; position: absolute; background: rgba(94, 223, 255, 0.55); }
+.bp-corner::before { width: 100%; height: 1px; top: 0; left: 0; }
+.bp-corner::after { width: 1px; height: 100%; top: 0; left: 0; }
+.bp-corner.tl { top: -1px; left: -1px; }
+.bp-corner.tr { top: -1px; right: -1px; transform: scaleX(-1); }
+.bp-corner.bl { bottom: -1px; left: -1px; transform: scaleY(-1); }
+.bp-corner.br { bottom: -1px; right: -1px; transform: scale(-1, -1); }
+
+.bp-label { @apply font-mono text-[10px] uppercase tracking-[0.2em] text-cyan-dim; }
+
+.bp-dashed {
+  background-image: repeating-linear-gradient(90deg, rgba(94, 223, 255, 0.35), rgba(94, 223, 255, 0.35) 6px, transparent 6px, transparent 12px);
+  height: 1px;
+}
+
+/* ---------- Article prose (Hexo-rendered markdown) ---------- */
+
+.bp-prose { @apply max-w-none text-steel-bright; }
+.bp-prose h1 { @apply font-display text-3xl md:text-4xl font-semibold text-white mt-12 mb-4 scroll-mt-28; }
+.bp-prose h2 { @apply font-display text-2xl md:text-3xl font-semibold text-white mt-12 mb-4 pb-2 border-b border-cyan/15 scroll-mt-28; }
+.bp-prose h3 { @apply font-display text-xl md:text-2xl font-semibold text-white mt-10 mb-3 scroll-mt-28; }
+.bp-prose h4 { @apply font-display text-lg font-semibold text-cyan-bright mt-8 mb-2 scroll-mt-28; }
+.bp-prose h1 a, .bp-prose h2 a, .bp-prose h3 a, .bp-prose h4 a,
+.bp-prose h1 .headerlink, .bp-prose h2 .headerlink, .bp-prose h3 .headerlink, .bp-prose h4 .headerlink {
+  @apply no-underline text-inherit;
+}
+.bp-prose p { @apply text-[15.5px] leading-[1.85] text-steel-bright/90 my-5; }
+.bp-prose a { @apply text-cyan underline decoration-cyan/30 underline-offset-4 hover:decoration-cyan transition-colors; }
+.bp-prose strong { @apply text-white font-semibold; }
+
+.bp-prose ul { @apply list-none pl-0 my-5 space-y-2; }
+.bp-prose ul li { @apply relative pl-6 text-steel-bright/90 leading-relaxed; }
+.bp-prose ul li::before {
+  content: ""; position: absolute; left: 2px; top: 0.65em; width: 8px; height: 8px;
+  border: 1px solid #5EDFFF; transform: rotate(45deg);
+}
+.bp-prose ol { @apply list-none pl-0 my-5 space-y-2; counter-reset: item; }
+.bp-prose ol li { counter-increment: item; @apply relative pl-8 text-steel-bright/90 leading-relaxed; }
+.bp-prose ol li::before {
+  content: counter(item, decimal-leading-zero); position: absolute; left: 0; top: 0;
+  @apply font-mono text-xs text-cyan;
+}
+.bp-prose li input[type="checkbox"] { @apply mr-2 accent-cyan; }
+.bp-prose li input[type="checkbox"] + * { display: inline; }
+
+.bp-prose blockquote { @apply border-l-2 border-cyan pl-5 py-1 my-6 italic text-steel-bright/80 bg-cyan/5; }
+.bp-prose blockquote p { @apply my-2; }
+.bp-prose hr { @apply border-none my-10 h-px bg-cyan/20; }
+.bp-prose img { @apply border border-cyan/20 my-6 max-w-full h-auto; }
+
+.bp-prose table { @apply w-full border-collapse text-sm my-6 block overflow-x-auto; }
+.bp-prose thead { @apply bg-navy-700; }
+.bp-prose th { @apply border border-cyan/20 px-3 py-2 text-left font-mono text-xs uppercase tracking-wider text-cyan; }
+.bp-prose td { @apply border border-cyan/15 px-3 py-2 text-steel-bright/85; }
+
+.bp-prose code:not(pre code) { @apply font-mono text-[0.85em] bg-navy-700 text-cyan-bright border border-cyan/20 px-1.5 py-0.5; }
+
+/* ---------- Code blocks ----------
+   hexo-renderer-markdown-it already server-side syntax-highlights fenced
+   code into <figure class="highlight lang"><table><tr>
+   <td class="gutter">line numbers</td><td class="code">tokens</td>
+   </tr></table></figure>. The JS enhancer just prepends a header; all
+   coloring below targets that real markup and its (unprefixed) token
+   classes — not highlight.js's own `.hljs-*` theme convention. */
+
+.bp-code-header {
+  @apply flex items-center justify-between border-b border-cyan/20 bg-navy-800/70 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-cyan-dim;
+}
+.bp-code-copy { @apply flex items-center gap-1.5 text-steel hover:text-cyan transition-colors cursor-pointer; }
+
+.bp-prose figure.highlight {
+  @apply my-6 border border-cyan/25 bg-[#050b16] overflow-x-auto;
+}
+.bp-prose figure.highlight table { @apply w-full border-collapse; }
+.bp-prose figure.highlight td { @apply border-none p-0 align-top; }
+.bp-prose figure.highlight pre {
+  @apply m-0 text-[13px] leading-relaxed font-mono whitespace-pre;
+  background-image: linear-gradient(rgba(94, 223, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 1.6em;
+}
+.bp-prose figure.highlight .gutter pre {
+  @apply select-none text-right text-steel-dim/40 pl-4 pr-3 py-4;
+}
+.bp-prose figure.highlight .code pre { @apply pl-4 pr-4 py-4 w-full; }
+.bp-prose figure.highlight .line { display: inline-block; }
+
+.bp-prose figure.highlight .comment { @apply text-steel-dim/70 italic; }
+.bp-prose figure.highlight .keyword,
+.bp-prose figure.highlight .selector-tag,
+.bp-prose figure.highlight .tag { @apply text-cyan; }
+.bp-prose figure.highlight .string,
+.bp-prose figure.highlight .addition,
+.bp-prose figure.highlight .regexp { @apply text-success; }
+.bp-prose figure.highlight .number,
+.bp-prose figure.highlight .literal,
+.bp-prose figure.highlight .symbol { @apply text-warning; }
+.bp-prose figure.highlight .title,
+.bp-prose figure.highlight .function_,
+.bp-prose figure.highlight .section,
+.bp-prose figure.highlight .name { @apply text-cyan-bright font-semibold; }
+.bp-prose figure.highlight .built_in,
+.bp-prose figure.highlight .type,
+.bp-prose figure.highlight .class { @apply text-cyan-dim; }
+.bp-prose figure.highlight .attr,
+.bp-prose figure.highlight .attribute,
+.bp-prose figure.highlight .params,
+.bp-prose figure.highlight .variable { @apply text-steel-bright; }
+.bp-prose figure.highlight .meta,
+.bp-prose figure.highlight .doctag { @apply text-steel-dim; }
+.bp-prose figure.highlight .deletion { @apply text-error; }
+.bp-prose figure.highlight .emphasis { @apply italic; }
+.bp-prose figure.highlight .strong { @apply font-bold; }
+
+/* ---------- Callouts (Hexo tag plugin output) ---------- */
+
+.bp-callout { @apply relative my-6 border pl-5 pr-4 py-4 flex gap-3; }
+.bp-callout-glyph {
+  @apply flex h-6 w-6 flex-shrink-0 items-center justify-center border font-mono text-xs font-bold;
+}
+.bp-callout-body p { @apply my-0 text-sm leading-relaxed text-steel-bright/90; }
+.bp-callout-title { @apply font-mono text-xs uppercase tracking-wider mb-1; }
+.bp-callout.note { @apply border-cyan/50 bg-cyan/[0.04] text-cyan; }
+.bp-callout.note .bp-callout-glyph { @apply border-cyan/50 text-cyan; }
+.bp-callout.tip { @apply border-success/50 bg-success/[0.04] text-success; }
+.bp-callout.tip .bp-callout-glyph { @apply border-success/50 text-success; }
+.bp-callout.warning { @apply border-warning/50 bg-warning/[0.04] text-warning; }
+.bp-callout.warning .bp-callout-glyph { @apply border-warning/50 text-warning; }
+.bp-callout.alert { @apply border-error/50 bg-error/[0.04] text-error; }
+.bp-callout.alert .bp-callout-glyph { @apply border-error/50 text-error; }
+
+/* ---------- Mermaid ---------- */
+.bp-mermaid { @apply my-6 border border-cyan/25 bg-navy-800/40 p-4 overflow-x-auto; }
+.bp-mermaid-label { @apply mb-2 font-mono text-[10px] uppercase tracking-wider text-cyan-dim; }
+
+.font-tabular { font-variant-numeric: tabular-nums; }
+
+/* ---------- Light "cyanotype paper" theme ---------- */
+html.light body {
+  @apply bg-paper text-navy-800;
+  background-image:
+    linear-gradient(rgba(10, 37, 64, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 37, 64, 0.06) 1px, transparent 1px);
+}
+html.light * { border-color: rgba(11, 61, 145, 0.18); }
+html.light .bp-panel { @apply bg-white/70; }
+html.light .bp-corner::before, html.light .bp-corner::after { background: rgba(11, 61, 145, 0.55); }
+html.light .bp-label { color: #0B3D91; }
+html.light .bp-prose h1, html.light .bp-prose h2, html.light .bp-prose h3, html.light .bp-prose h4 { color: #0A2540; }
+html.light .bp-prose p, html.light .bp-prose li, html.light .bp-prose td { color: #233246; }
+html.light .bp-prose a { color: #0B3D91; }
+html.light .text-white { color: #0A2540; }
+html.light .text-steel, html.light .text-steel-bright { color: #46536A; }
+html.light .bg-navy-500, html.light .bg-navy-600, html.light .bg-navy-700 { background-color: #FFFFFF; }
+html.light .text-cyan, html.light .text-cyan-bright { color: #0B3D91; }
+html.light .text-cyan-dim { color: #4679CB; }
+html.light .border-cyan\/15, html.light .border-cyan\/20, html.light .border-cyan\/25, html.light .border-cyan\/40 {
+  border-color: rgba(11, 61, 145, 0.3);
+}
+
+/* ---------- SPA navigation transition ---------- */
+#bp-main { transition: opacity 0.15s ease; }
+#bp-main.bp-nav-loading { opacity: 0.4; }
+#bp-progress-bar {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: #5EDFFF; z-index: 100; transition: width 0.2s ease, opacity 0.3s ease;
+}

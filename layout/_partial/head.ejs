@@ -1,0 +1,71 @@
+<%
+  // Category/tag archive pages don't set page.title (they set page.category /
+  // page.tag instead); the /archives/ Timeline and its yearly/monthly
+  // sub-archives set page.archive (+ page.year/page.month) instead; the
+  // custom categories_index/about/404 pages set page.title from front-matter.
+  // Fall back through all of them.
+  var archiveTitle = page.archive
+    ? (page.year ? (page.month ? page.year + '-' + String(page.month).padStart(2, '0') + ' Archive' : page.year + ' Archive') : 'Timeline')
+    : '';
+  var pageTitle = page.title || page.category || page.tag || archiveTitle || '';
+
+  // Posts get a generated blueprint-styled social card (scripts/og-generator.js);
+  // everything else falls back to a manually-set cover image or the configured
+  // default. og:image requires an absolute URL, hence config.url + url_for().
+  var ogImage = page.layout === 'post'
+    ? config.url + url_for('/og/' + page.slug + '.png')
+    : (page.cover || theme.seo.og_image_fallback);
+%>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle ? (pageTitle + ' — ' + theme.brand.name) : (config.title || theme.brand.name) %></title>
+  <meta name="description" content="<%= page.description || theme.brand.description %>">
+  <link rel="canonical" href="<%= config.url %><%- url_for(page.path || '') %>">
+
+  <meta property="og:type" content="<%= page.layout === 'post' ? 'article' : 'website' %>">
+  <meta property="og:site_name" content="<%= theme.brand.name %>">
+  <meta property="og:title" content="<%= pageTitle || theme.brand.name %>">
+  <meta property="og:description" content="<%= page.description || theme.brand.description %>">
+  <meta property="og:image" content="<%= ogImage %>">
+  <% if (page.layout === 'post') { %>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <% } %>
+  <meta property="og:url" content="<%= config.url %><%- url_for(page.path || '') %>">
+  <% if (page.layout === 'post') { %>
+  <meta property="article:published_time" content="<%= page.date.toISOString() %>">
+  <meta property="article:modified_time" content="<%= (page.updated || page.date).toISOString() %>">
+  <% } %>
+  <meta name="twitter:card" content="<%= theme.seo.twitter_card %>">
+  <meta name="twitter:title" content="<%= pageTitle || theme.brand.name %>">
+  <meta name="twitter:description" content="<%= page.description || theme.brand.description %>">
+  <meta name="twitter:image" content="<%= ogImage %>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="<%- url_for('/assets/app.css') %>?v=<%= asset_version('app.css') %>">
+
+  <% if (page.layout === 'post') { %>
+  <script type="application/ld+json"><%- JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": page.title,
+    "description": page.description || '',
+    "image": page.cover || '',
+    "datePublished": page.date.toISOString(),
+    "dateModified": (page.updated || page.date).toISOString(),
+    "author": { "@type": "Person", "name": page.author || theme.author.name }
+  }) %></script>
+  <% } else { %>
+  <script type="application/ld+json"><%- JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": theme.brand.name,
+    "description": theme.brand.description,
+    "url": config.url
+  }) %></script>
+  <% } %>
+</head>

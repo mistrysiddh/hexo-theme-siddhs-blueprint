@@ -1,0 +1,207 @@
+# ============================================================
+# Siddh's Blueprint — Hexo Theme Configuration
+# Engineering Blueprint design language for technical blogs.
+# Full option reference: see README.md
+# ============================================================
+
+# ---------- Site identity ----------
+brand:
+  name: "Siddh's Blueprint"
+  logo_prefix: "SIDDH'S"     # white part of the two-tone logo mark
+  logo_accent: "BLUEPRINT"   # cyan-accented part of the two-tone logo mark
+  tagline: "Engineering Docs"
+  description: "A living engineering blueprint: technical writing on Linux, containers, networking, security, AI, automation, cloud and self-hosted infrastructure."
+
+# ---------- Navigation ----------
+menu:
+  Home: /
+  Categories: /categories/
+  Timeline: /archives/
+  About: /about/
+
+# ---------- Appearance ----------
+appearance:
+  default_theme: dark          # dark | light
+  allow_theme_toggle: true
+  hero_autoplay_ms: 5000
+  posts_per_page: 6
+
+# ---------- Author / profile (used on the About page) ----------
+author:
+  name: "Siddh Mistry"
+  role: "Systems Engineer & Technical Writer"
+  avatar: https://picsum.photos/seed/siddhs-blueprint-author/256/256
+  bio: >
+    I design and document infrastructure the way engineers draft machines — precisely, and
+    built to be read by the next person who has to maintain it. This blog is my running spec
+    sheet for Linux systems, containers, networks, and the automation that holds them together.
+  resume: /resume.txt
+  email: mailto:hello@example.com
+
+social:
+  github: https://github.com/
+  linkedin: https://linkedin.com/
+  twitter: https://twitter.com/
+  instagram: https://instagram.com/
+  youtube: https://youtube.com/
+
+experience:
+  - role: Senior Systems Engineer
+    org: Independent / Consulting
+    period: "2023 — Present"
+    description: "Designing resilient infrastructure and writing the documentation that keeps it maintainable — Kubernetes platforms, observability stacks, and internal developer tooling."
+  - role: Platform Engineer
+    org: Cloud Infrastructure Team
+    period: "2020 — 2023"
+    description: "Built and operated multi-region Kubernetes platforms, CI/CD pipelines, and the automation layer that let application teams ship without touching Terraform."
+  - role: Site Reliability Engineer
+    org: SaaS Infrastructure Team
+    period: "2018 — 2020"
+    description: "Owned on-call rotation, incident response, and capacity planning for a distributed systems handling production traffic at scale."
+
+education:
+  - degree: "B.Tech, Computer Engineering"
+    school: "University Institute of Technology"
+    period: "2014 — 2018"
+
+skills:
+  - group: Systems
+    items: [Linux Internals, Kernel Tuning, Bash/POSIX, Systemd]
+  - group: Infrastructure
+    items: [Kubernetes, Docker, Terraform, Ansible]
+  - group: Cloud
+    items: [AWS, GCP, Cloudflare, Self-hosted / Homelab]
+  - group: Languages
+    items: [Go, Python, TypeScript, Bash]
+  - group: Security
+    items: [Network Hardening, SSO/IAM, Threat Modeling]
+
+achievements:
+  - "Reduced platform incident MTTR by 62% through structured runbooks and alert tuning"
+  - "Migrated a 40-service monolith-adjacent stack to Kubernetes with zero customer-facing downtime"
+  - "Built an internal developer platform adopted by 12 engineering teams"
+
+certifications:
+  - name: "Certified Kubernetes Administrator (CKA)"
+    year: 2023
+  - name: "AWS Certified Solutions Architect — Associate"
+    year: 2022
+  - name: "LFCS — Linux Foundation Certified Sysadmin"
+    year: 2021
+
+projects:
+  - name: homelab-blueprints
+    description: "Infrastructure-as-code specs for a self-hosted home lab."
+    url: https://github.com/
+  - name: k8s-runbooks
+    description: "A library of incident runbooks for common Kubernetes failure modes."
+    url: https://github.com/
+  - name: edge-inference-cluster
+    description: "k3s cluster configs for distributed Raspberry Pi edge inference."
+    url: https://github.com/
+
+favorite_tech: [Kubernetes, Go, ZFS, Terraform, Caddy, Grafana, NixOS, Tailscale]
+
+# ---------- Category → "System Module" display mapping ----------
+# Key must match the Hexo category slug used in post front-matter.
+category_modules:
+  linux:
+    label: "Linux"
+    name: "System Core"
+    code: MOD-01
+    icon: terminal-square
+    description: "Kernel internals, shell mastery, and operating-system fundamentals."
+  docker:
+    label: "Docker"
+    name: "Container Module"
+    code: MOD-02
+    icon: box
+    description: "Image builds, orchestration, and containerized deployment specs."
+  networking:
+    label: "Networking"
+    name: "Communication Layer"
+    code: MOD-03
+    icon: waypoints
+    description: "Protocols, routing schematics, and infrastructure wiring diagrams."
+  cybersecurity:
+    label: "Cybersecurity"
+    name: "Security Module"
+    code: MOD-04
+    icon: shield-half
+    description: "Threat models, hardening procedures, and defensive engineering."
+  ai:
+    label: "AI"
+    name: "Intelligence Engine"
+    code: MOD-05
+    icon: brain-circuit
+    description: "Model architecture, training pipelines, and applied machine learning."
+  automation:
+    label: "Automation"
+    name: "Control System"
+    code: MOD-06
+    icon: cog
+    description: "Scripts, pipelines, and self-operating workflow assemblies."
+  cloud:
+    label: "Cloud"
+    name: "Infrastructure Layer"
+    code: MOD-07
+    icon: server-cog
+    description: "Provisioning specs, scaling strategy, and distributed systems."
+  programming:
+    label: "Programming"
+    name: "Logic Engine"
+    code: MOD-08
+    icon: braces
+    description: "Language internals, design patterns, and software construction."
+  self-hosting:
+    label: "Self Hosting"
+    name: "Local Infrastructure"
+    code: MOD-09
+    icon: hard-drive
+    description: "Home lab builds, service hosting, and private infrastructure."
+  raspberry-pi:
+    label: "Raspberry Pi"
+    name: "Embedded Controller"
+    code: MOD-10
+    icon: cpu
+    description: "Single-board builds, GPIO wiring, and embedded firmware notes."
+
+# ---------- Footer engineering title block ----------
+title_block:
+  project_name: "Siddh's Blueprint"
+  document_id: "BPL-2026-HOME"
+  drawing_number: "DWG-00104"
+  revision: "REV-C"
+  status: "Published"
+  scale: "1:1 — Responsive"
+  version: "v1.1.0"
+  author: "S. Mistry"
+  license: "CC BY-NC 4.0"
+
+# ---------- Comments ----------
+# local:   session-local demo box, no backend, no setup (default)
+# giscus:  real, persisted comments backed by GitHub Discussions — free, no
+#          server to run. Set up in ~2 minutes at https://giscus.app: enable
+#          Discussions on a PUBLIC repo, install the giscus GitHub App on it,
+#          then paste the four values giscus.app generates for you below.
+# disabled: hide the comments section entirely
+comments:
+  provider: local
+  giscus:
+    repo: ""              # "username/repo"
+    repo_id: ""
+    category: "Announcements"
+    category_id: ""
+    mapping: "pathname"   # maps each post's URL to its own Discussion thread
+    reactions_enabled: true
+    input_position: "top"
+
+# ---------- Search ----------
+search:
+  enable: true
+  # Fields indexed: title, excerpt, tags, category, author
+
+# ---------- SEO ----------
+seo:
+  og_image_fallback: https://picsum.photos/seed/siddhs-blueprint-og/1200/630
+  twitter_card: summary_large_image

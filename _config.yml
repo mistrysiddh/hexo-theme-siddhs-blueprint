@@ -196,6 +196,20 @@ comments:
     reactions_enabled: true
     input_position: "top"
 
+# ---------- Newsletter ----------
+# provider options:
+# local: cosmetic demo only — no email is sent or stored anywhere (default)
+# listmonk: wires the subscribe form to a real, self-hosted, open-source
+#           listmonk (https://listmonk.app) instance. Requires listmonk to be
+#           deployed somewhere reachable from your visitors' browsers and a
+#           public mailing list created in it — see the README's "Newsletter"
+#           section for the full self-hosting + CORS setup guide.
+newsletter:
+  provider: local
+  listmonk:
+    url: ""          # e.g. "https://list.yourdomain.com" — your listmonk instance
+    list_uuid: ""     # the public list's UUID, from listmonk → Lists
+
 # ---------- Search ----------
 search:
   enable: true

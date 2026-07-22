@@ -89,7 +89,9 @@ instant without giving up static-site SEO.
 
 5. `hexo server` (or `hexo generate`).
 
-A ready-to-run example site lives at [`../hexo-demo`](../hexo-demo) in this repository — see its
+A ready-to-run example site — with this theme wired in as a git submodule, all ten sample posts,
+and a GitHub Actions build workflow — lives in its own repo:
+[hexo-demo-siddhs-blueprint](https://github.com/mistrysiddh/hexo-demo-siddhs-blueprint). See its
 README for the fastest way to see the theme running.
 
 ## Recommended site plugins

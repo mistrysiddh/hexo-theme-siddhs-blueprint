@@ -236,6 +236,48 @@ On top of that static HTML:
 >   # ...one line per category you use, matching theme category_modules keys
 > ```
 
+## Site-level config overrides (`_config.siddhs-blueprint.yml`)
+
+You don't have to fork this theme — or hand-edit its `_config.yml` inside
+`themes/siddhs-blueprint/`, which makes future `git pull`s conflict with your changes — just to
+change a name, bio, or social link. Hexo has a built-in mechanism for exactly this: drop a file
+named `_config.<theme name>.yml` in your **site's root** (next to your site's own `_config.yml`,
+*not* inside the theme folder), and Hexo deep-merges it over the theme's own `_config.yml` before
+every build. Since this theme is named `siddhs-blueprint`, the file must be named exactly:
+
+```
+your-hexo-site/
+├── _config.yml                       # your site config (theme: siddhs-blueprint)
+├── _config.siddhs-blueprint.yml      # ← your overrides, deep-merged over the theme defaults
+└── themes/siddhs-blueprint/          # the theme itself — leave this untouched
+```
+
+Only include the keys you want to change — everything else falls back to the theme's own
+`_config.yml`. For example, to override just the author bio and wire up a real Giscus repo without
+touching anything else:
+
+```yaml
+# _config.siddhs-blueprint.yml (site root)
+author:
+  role: "Senior Infrastructure Engineer"
+  bio: "I write about homelab, Kubernetes, and the occasional kernel panic."
+
+comments:
+  provider: giscus
+  giscus:
+    repo: yourname/your-repo
+    repo_id: R_xxxxxxx
+    category: Announcements
+    category_id: DIC_xxxxxxx
+```
+
+This is a real Hexo core feature (`hexo/lib/hexo/load_theme_config.js`), not something specific to
+this theme — it works the same way for any Hexo theme, keyed off whatever name follows `theme:` in
+your site's `_config.yml`. Keeping overrides in your site repo instead of the theme repo means
+pulling theme updates never conflicts with your personal configuration. (Verified against this
+theme: a test `author.role` override in `_config.siddhs-blueprint.yml` correctly appeared on the
+rendered About page while every other theme default was left untouched.)
+
 ## Writing posts
 
 Standard Hexo front-matter, plus a few extra fields this theme reads:
@@ -273,6 +315,30 @@ graph TD
 ```
 
 Math: `$inline$` and `$$block$$` (rendered client-side with KaTeX).
+
+## Scaffolds (`hexo new`)
+
+The theme ships scaffold templates for `post`, `draft`, and `page` under its own `scaffolds/`
+directory, pre-filled with the front-matter fields above (`subtitle`, `cover`, `featured`,
+`version`, a reminder comment about matching `category_map`/`category_modules`) instead of Hexo's
+bare generic defaults.
+
+**Hexo does not automatically use a theme's scaffolds** — `hexo new` only ever reads scaffolds from
+your **site's own** `scaffolds/` directory; this is a Hexo core limitation (see
+`hexo/lib/hexo/scaffold.js`), not something a theme can override. To use these templates, copy them
+into your site once after installing the theme:
+
+```bash
+# from your Hexo site root
+cp themes/siddhs-blueprint/scaffolds/*.md scaffolds/
+```
+
+After that, `hexo new post "My Post"`, `hexo new draft "My Draft"`, and `hexo new page "My Page"`
+will use these templates instead of Hexo's defaults. (Verified: a fresh `hexo new post` after
+copying the scaffolds produced a file with `subtitle`, `cover`, `categories`, `tags`, `featured`,
+and `version` fields already in place.) If you edit the theme's scaffolds later — e.g. after
+pulling a theme update — re-copy them; Hexo never reads `themes/siddhs-blueprint/scaffolds/`
+directly.
 
 ## Social share cards
 

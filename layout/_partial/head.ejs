@@ -23,6 +23,12 @@
   <meta name="description" content="<%= page.description || theme.brand.description %>">
   <link rel="canonical" href="<%= config.url %><%- url_for(page.path || '') %>">
 
+  <link rel="icon" href="<%- url_for('/favicon.ico') %>" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="<%- url_for('/favicon.svg') %>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<%- url_for('/favicon-32x32.png') %>">
+  <link rel="apple-touch-icon" href="<%- url_for('/apple-touch-icon.png') %>">
+  <meta name="theme-color" content="#0A2540">
+
   <meta property="og:type" content="<%= page.layout === 'post' ? 'article' : 'website' %>">
   <meta property="og:site_name" content="<%= theme.brand.name %>">
   <meta property="og:title" content="<%= pageTitle || theme.brand.name %>">

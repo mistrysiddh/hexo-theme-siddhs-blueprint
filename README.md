@@ -64,7 +64,7 @@ instant without giving up static-site SEO.
 1. Clone this theme into your Hexo site's `themes/` folder:
 
    ```bash
-   git clone <this-repo> themes/siddhs-blueprint
+   git clone https://github.com/mistrysiddh/hexo-theme-siddhs-blueprint.git themes/siddhs-blueprint
    ```
 
 2. Install and build the theme's front-end bundle (Vue/Vite/Tailwind):

@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+- Real newsletter subscriptions: the subscribe form can now POST to a self-hosted, open-source
+  [listmonk](https://listmonk.app) instance's public `/api/public/subscription` endpoint (email +
+  double opt-in confirmation state, inline error handling) via `newsletter.provider: listmonk` /
+  `newsletter.listmonk.*`. Cosmetic no-op `local` provider remains the default.
+- Site-level config overrides — a site-root `_config.siddhs-blueprint.yml` now deep-merges over
+  the theme's own `_config.yml` (a real Hexo core mechanism), so personal/site settings no longer
+  require editing the theme submodule directly.
+- Scaffolds — `scaffolds/post.md`, `draft.md`, `page.md` ship with the theme's actual front-matter
+  fields. Must be copied into the site's own `scaffolds/` directory to take effect (Hexo has no
+  theme-scaffold fallback).
+
 ## 1.1.0
 
 - Generated per-post social share cards (`og/<slug>.png`, 1200×630) via satori + resvg — real

@@ -53,6 +53,9 @@ instant without giving up static-site SEO.
 - **Full-text search, accessible SPA navigation** — search indexes post body text (not just
   title/tags), and route changes announce themselves to screen readers and move focus, since
   swapping content client-side doesn't trigger the browser's normal navigation announcement.
+- **Newsletter** — subscribe form on the home page and footer, optionally backed by a real,
+  self-hosted [listmonk](https://listmonk.app) instance (free, open source); cosmetic no-op by
+  default. See [Newsletter](#newsletter) below.
 
 ## Requirements
 
@@ -218,6 +221,8 @@ On top of that static HTML:
 | `title_block.*` | Footer engineering title-block fields |
 | `comments.provider` | `local` (session-only demo, default) · `giscus` (real, GitHub Discussions-backed) · `disabled` |
 | `comments.giscus.*` | `repo`, `repo_id`, `category`, `category_id` from [giscus.app](https://giscus.app) after enabling Discussions on a public repo and installing the giscus app |
+| `newsletter.provider` | `local` (cosmetic demo, default — no email is sent or stored) · `listmonk` (real, backed by a self-hosted [listmonk](https://listmonk.app) instance) |
+| `newsletter.listmonk.*` | `url` (your listmonk instance) and `list_uuid` (the public list to subscribe to) — see [Newsletter](#newsletter) below |
 | `seo.*` | OG image fallback, Twitter card type |
 
 > **Category slugs must match exactly.** Hexo slugifies category *names* into slugs itself, and
@@ -352,6 +357,60 @@ Text is set in KaTeX's bundled SansSerif font (`node_modules/katex/dist/fonts/`)
 MIT/SIL-licensed dependency of this theme, so no additional font asset needs to be fetched or
 shipped just for this. `head.ejs` points `og:image`/`twitter:image` at the generated card for post
 pages automatically; other pages keep using `cover` / `seo.og_image_fallback`.
+
+## Newsletter
+
+The subscribe form (home page + footer) is backed by [listmonk](https://listmonk.app) — a free,
+open-source, self-hosted newsletter and mailing list manager (Go + Postgres, single binary,
+AGPL-licensed). With `newsletter.provider: local` (the default) the form is purely cosmetic — no
+email is sent, stored, or transmitted anywhere, same as `comments.provider: local`. Switching it to
+`listmonk` makes it real.
+
+**1. Deploy listmonk.** The quickest path is their official Docker Compose stack:
+
+```bash
+mkdir listmonk && cd listmonk
+curl -LO https://github.com/knadh/listmonk/raw/master/docker-compose.yml
+curl -LO https://github.com/knadh/listmonk/raw/master/config.toml.sample
+mv config.toml.sample config.toml
+docker compose up -d
+```
+
+Visit the instance once at `:9000/admin` to finish setup (admin account, SMTP settings for sending
+confirmation/campaign emails), then create a **list** under *Lists* and copy its UUID.
+
+**2. Expose it under your own domain with CORS enabled.** The subscribe form calls listmonk's
+public API directly from the visitor's browser (`POST /api/public/subscription` — no auth
+required, verified against listmonk's own handler source), so the browser's CORS policy applies.
+listmonk itself doesn't send `Access-Control-Allow-Origin`, so add it at your reverse proxy. For
+nginx, on the vhost that proxies to listmonk:
+
+```nginx
+location / {
+    proxy_pass http://127.0.0.1:9000;
+    add_header Access-Control-Allow-Origin "https://yourdomain.com" always;
+    add_header Access-Control-Allow-Methods "POST, OPTIONS" always;
+    add_header Access-Control-Allow-Headers "Content-Type" always;
+    if ($request_method = OPTIONS) { return 204; }
+}
+```
+
+**3. Point the theme at it** — in your site's `_config.siddhs-blueprint.yml` (see
+[Site-level config overrides](#site-level-config-overrides-_configsiddhs-blueprintyml) above):
+
+```yaml
+newsletter:
+  provider: listmonk
+  listmonk:
+    url: "https://list.yourdomain.com"
+    list_uuid: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+```
+
+That's the whole integration — no server-side code of your own, no secret keys shipped to the
+browser (the public subscription endpoint only ever accepts an email + list UUID). If listmonk has
+double opt-in enabled for the list, the form shows a "confirm via the email we just sent you"
+state instead of an immediate success; a network/CORS failure shows an inline error instead of
+silently doing nothing.
 
 ## Development
 

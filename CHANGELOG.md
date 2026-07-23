@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2
+
+- Docs fix: syntax highlighting is produced by Hexo **core**'s `syntax_highlighter` config
+  (default `highlight.js`), not by `hexo-renderer-markdown-it` as the README and a couple of source
+  comments previously said. The demo site's `_config.yml` used the legacy `highlight.enable` /
+  `prismjs.enable` blocks, which Hexo 7 silently ignores — updated to the current
+  `syntax_highlighter: highlight.js` key and corrected the attribution everywhere it appeared.
+
 ## 1.2.1
 
 - Fixed: a `category_modules` entry with no posts yet had no generated `/categories/<slug>/` page

@@ -36,8 +36,8 @@ instant without giving up static-site SEO.
   Documentation Length / Revision / Version), sticky Table of Contents with scroll-spy, reading
   progress bar, previous/next, related documents, mobile Table of Contents drawer, and comments
   (session-local by default, or real GitHub Discussions-backed comments via [Giscus](https://giscus.app)).
-- **Rich content support**: fenced code blocks (server-side highlighted with real line numbers via
-  `hexo-renderer-markdown-it`, enhanced client-side with a copy button + language badge), custom
+- **Rich content support**: fenced code blocks (server-side highlighted with real line numbers by
+  Hexo core's `syntax_highlighter`, enhanced client-side with a copy button + language badge), custom
   `{% callout %}` note/tip/warning/alert boxes, `{% mermaid %}` diagrams, inline/block KaTeX math,
   GFM task lists, footnotes, tables, blockquotes, embedded video/iframes, file download links,
   image zoom.
@@ -114,9 +114,13 @@ Add these to your **site's** `package.json` (the demo site already has them conf
 And in your site's `_config.yml`:
 
 ```yaml
-highlight:
-  enable: false   # disable Hexo core's legacy highlighter — hexo-renderer-markdown-it
-                  # does its own (better) highlighting with real line numbers
+# Hexo CORE (not the markdown renderer) intercepts fenced code blocks and
+# highlights them server-side via this key — that's what produces the real
+# line numbers and per-token classes this theme's code-block CSS targets.
+# "highlight.js" is Hexo's default; set it explicitly since it's load-bearing.
+# This is the current (Hexo 7+) key — it replaces the old separate
+# `highlight.enable` / `prismjs.enable` blocks, which Hexo 7 silently ignores.
+syntax_highlighter: highlight.js
 
 archive_generator:
   per_page: 0     # required: Timeline needs every post rendered so its

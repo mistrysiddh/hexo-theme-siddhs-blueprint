@@ -1,9 +1,10 @@
 import { iconSvg } from "../lib/icons";
 
-// hexo-renderer-markdown-it already syntax-highlights fenced code blocks
-// server-side (with real line numbers) into `<figure class="highlight lang">`.
-// This enhancer only adds the blueprint chrome — language badge + copy
-// button — around that existing markup. No client-side highlighter needed.
+// Hexo core (syntax_highlighter: highlight.js) already syntax-highlights
+// fenced code blocks server-side (with real line numbers) into
+// `<figure class="highlight lang">`. This enhancer only adds the blueprint
+// chrome — language badge + copy button — around that existing markup. No
+// client-side highlighter needed.
 export function initCodeBlocks(root: ParentNode) {
   const figures = root.querySelectorAll<HTMLElement>(".bp-prose figure.highlight");
 

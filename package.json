@@ -1,6 +1,6 @@
 {
   "name": "hexo-theme-siddhs-blueprint",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An Engineering Blueprint themed Hexo theme — CAD drawings, technical specification sheets, and precision-engineered documentation styling, with a Vue 3 + Vite powered interactive layer and SPA-style navigation.",
   "keywords": ["hexo", "theme", "hexo-theme", "blueprint", "engineering", "vue", "vite", "documentation"],
   "license": "MIT",

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1
+
+- Fixed: a `category_modules` entry with no posts yet had no generated `/categories/<slug>/` page
+  (Hexo's category generator skips categories with zero posts), so its module card linked straight
+  to a 404. Empty-module cards on the home page and `/categories/` now render as non-clickable
+  "NO DOCUMENTS YET" cards instead, and the footer's module list omits them.
+
 ## 1.2.0
 
 - Real newsletter subscriptions: the subscribe form can now POST to a self-hosted, open-source

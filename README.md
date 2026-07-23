@@ -241,6 +241,15 @@ On top of that static HTML:
 >   # ...one line per category you use, matching theme category_modules keys
 > ```
 
+> **A `category_modules` entry with no posts yet doesn't get a broken link.** Hexo's category
+> generator only builds an archive page (`/categories/<slug>/`) for categories that have at least
+> one post — a module configured ahead of writing your first post in it has no page for Hexo to
+> generate, so a plain link there would 404 straight from your web server. This theme checks post
+> count before rendering each module card: on the home page and `/categories/`, a module with zero
+> posts renders as a dimmed, non-clickable "NO DOCUMENTS YET" card instead of a link, and the
+> footer's module list omits it entirely. The link comes back automatically once the module has its
+> first post — no config change needed.
+
 ## Site-level config overrides (`_config.siddhs-blueprint.yml`)
 
 You don't have to fork this theme — or hand-edit its `_config.yml` inside

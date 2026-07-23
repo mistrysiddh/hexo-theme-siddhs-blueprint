@@ -7,7 +7,15 @@
     { key: 'youtube', label: 'YouTube' },
   ];
   var recentPosts = site.posts.sort('-date').limit(4).toArray();
-  var moduleEntries = Object.keys(theme.category_modules).slice(0, 6);
+  var allPostsForModules = site.posts.toArray();
+  function hasDocsFor(slug) {
+    return allPostsForModules.some(function (p) {
+      return p.categories.toArray().some(function (c) { return c.slug === slug; });
+    });
+  }
+  // Only link to modules that actually have a generated archive page —
+  // Hexo's category generator never builds a page for an empty category.
+  var moduleEntries = Object.keys(theme.category_modules).filter(hasDocsFor).slice(0, 6);
   var titleBlockFields = [
     { label: 'Project Name', value: theme.title_block.project_name },
     { label: 'Document ID', value: theme.title_block.document_id },

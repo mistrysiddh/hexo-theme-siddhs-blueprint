@@ -38,10 +38,12 @@
          var posts = postsFor(slug);
          var latest = posts[0];
          var label = mod.label;
+         var hasPosts = posts.length > 0;
+         var Tag = hasPosts ? 'a' : 'div';
     %>
-    <a
-      href="<%- url_for('/categories/' + slug + '/') %>"
-      class="group relative border border-cyan/15 bg-navy-700/30 p-5 hover:border-cyan/60 hover:bg-cyan/5 transition-colors"
+    <<%= Tag %>
+      <% if (hasPosts) { %>href="<%- url_for('/categories/' + slug + '/') %>"<% } %>
+      class="group relative border border-cyan/15 bg-navy-700/30 p-5 transition-colors <%= hasPosts ? 'hover:border-cyan/60 hover:bg-cyan/5' : 'opacity-50' %>"
       data-category-card
       data-name="<%= (mod.name + ' ' + label + ' ' + mod.description).toLowerCase() %>"
       data-count="<%= posts.length %>"
@@ -49,17 +51,21 @@
     >
       <span class="bp-corner tl"></span><span class="bp-corner tr"></span><span class="bp-corner bl"></span><span class="bp-corner br"></span>
       <div class="flex items-start justify-between">
-        <span class="flex h-11 w-11 items-center justify-center border border-cyan/30 text-cyan group-hover:bg-cyan/10 transition-colors"><%- icon(mod.icon, 20) %></span>
+        <span class="flex h-11 w-11 items-center justify-center border border-cyan/30 text-cyan <%= hasPosts ? 'group-hover:bg-cyan/10' : '' %> transition-colors"><%- icon(mod.icon, 20) %></span>
         <span class="font-mono text-[10px] text-cyan-dim"><%= mod.code %></span>
       </div>
-      <h3 class="mt-4 font-display text-lg font-semibold text-white group-hover:text-cyan-bright transition-colors"><%= mod.name %></h3>
+      <h3 class="mt-4 font-display text-lg font-semibold text-white <%= hasPosts ? 'group-hover:text-cyan-bright' : '' %> transition-colors"><%= mod.name %></h3>
       <p class="text-xs text-steel-dim mb-2"><%= label %></p>
       <p class="text-sm text-steel leading-relaxed line-clamp-2"><%= mod.description %></p>
       <div class="mt-4 border-t border-cyan/10 pt-3 font-mono text-[10px] text-steel-dim">
-        <%= posts.length %> DOC<%= posts.length !== 1 ? 'S' : '' %> INDEXED
-        <% if (latest) { %><p class="mt-1 truncate text-steel-bright normal-case">Latest: <%= latest.title %></p><% } %>
+        <% if (hasPosts) { %>
+          <%= posts.length %> DOC<%= posts.length !== 1 ? 'S' : '' %> INDEXED
+          <% if (latest) { %><p class="mt-1 truncate text-steel-bright normal-case">Latest: <%= latest.title %></p><% } %>
+        <% } else { %>
+          NO DOCUMENTS YET
+        <% } %>
       </div>
-    </a>
+    </<%= Tag %>>
     <% }) %>
   </div>
   <p id="bp-categories-empty" class="hidden text-center font-mono text-xs text-steel-dim py-16">No modules match that filter.</p>

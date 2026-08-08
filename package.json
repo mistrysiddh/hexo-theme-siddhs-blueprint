@@ -11,7 +11,7 @@
   "dependencies": {
     "vue": "^3.4.38",
     "katex": "^0.16.11",
-    "mermaid": "^10.9.1",
+    "mermaid": "^10.9.8",
     "satori": "^0.10.13",
     "@resvg/resvg-js": "^2.6.2"
   },
